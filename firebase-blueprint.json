@@ -1,0 +1,95 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "A user of the Aetherium Codex system.",
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "The user's email address."
+        },
+        "role": {
+          "type": "string",
+          "enum": ["admin", "user"],
+          "description": "The user's role in the system."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When the user was created."
+        }
+      },
+      "required": ["email", "role", "createdAt"]
+    },
+    "Project": {
+      "title": "Project",
+      "description": "A project managed within the Nexus.",
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": "The title of the project."
+        },
+        "description": {
+          "type": "string",
+          "description": "A description of the project."
+        },
+        "ownerId": {
+          "type": "string",
+          "description": "The UID of the user who owns the project."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When the project was created."
+        }
+      },
+      "required": ["title", "description", "ownerId", "createdAt"]
+    },
+    "Vessel": {
+      "title": "Vessel",
+      "description": "An AI agent or cognitive faculty within a project.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The name of the vessel."
+        },
+        "type": {
+          "type": "string",
+          "description": "The type or archetype of the vessel."
+        },
+        "projectId": {
+          "type": "string",
+          "description": "The ID of the project this vessel belongs to."
+        },
+        "ownerId": {
+          "type": "string",
+          "description": "The UID of the user who owns the vessel."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When the vessel was created."
+        }
+      },
+      "required": ["name", "type", "projectId", "ownerId", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/User" },
+      "description": "User profiles."
+    },
+    "/projects/{projectId}": {
+      "schema": { "$ref": "#/entities/Project" },
+      "description": "Projects created by users."
+    },
+    "/vessels/{vesselId}": {
+      "schema": { "$ref": "#/entities/Vessel" },
+      "description": "Vessels associated with projects."
+    }
+  }
+}
