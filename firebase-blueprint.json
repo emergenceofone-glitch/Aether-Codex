@@ -36,6 +36,11 @@
           "type": "string",
           "description": "A description of the project."
         },
+        "status": {
+          "type": "string",
+          "enum": ["Active", "In-Progress", "Archived"],
+          "description": "The operational state of the project."
+        },
         "ownerId": {
           "type": "string",
           "description": "The UID of the user who owns the project."
@@ -46,7 +51,7 @@
           "description": "When the project was created."
         }
       },
-      "required": ["title", "description", "ownerId", "createdAt"]
+      "required": ["title", "description", "status", "ownerId", "createdAt"]
     },
     "Vessel": {
       "title": "Vessel",

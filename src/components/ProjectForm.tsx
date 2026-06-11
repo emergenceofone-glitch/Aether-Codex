@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { createProject } from '../lib/projectService';
+import { createProject, ProjectStatus } from '../lib/projectService';
 import { Loader2, Plus } from 'lucide-react';
 
 export default function ProjectForm({ onProjectCreated }: { onProjectCreated: () => void }) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [status, setStatus] = useState<ProjectStatus>('In-Progress');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -16,9 +17,10 @@ export default function ProjectForm({ onProjectCreated }: { onProjectCreated: ()
     setError('');
 
     try {
-      await createProject(title, description);
+      await createProject(title, description, status);
       setTitle('');
       setDescription('');
+      setStatus('In-Progress');
       onProjectCreated();
     } catch (err) {
       setError('Failed to create project.');
@@ -51,6 +53,29 @@ export default function ProjectForm({ onProjectCreated }: { onProjectCreated: ()
           required
           className="w-full bg-[#0a0f14] border border-[#ffffff1a] rounded px-3 py-2 text-[#e0e6ed] focus:border-[#00f0ff] outline-none min-h-[100px]"
         />
+      </div>
+
+      <div>
+        <label className="block text-xs uppercase text-[#9ca3af] mb-1">Initial Status</label>
+        <div className="grid grid-cols-3 gap-2">
+          {(['In-Progress', 'Active', 'Archived'] as ProjectStatus[]).map((state) => {
+            const isSelected = status === state;
+            return (
+              <button
+                key={state}
+                type="button"
+                onClick={() => setStatus(state)}
+                className={`py-2 px-1 text-xs font-bold rounded border transition-all ${
+                  isSelected
+                    ? 'bg-[#00f0ff] border-[#00f0ff] text-black shadow-[0_0_8px_rgba(0,240,255,0.4)]'
+                    : 'bg-[#0a0f14] border-[#ffffff1a] text-[#9ca3af] hover:text-[#e0e6ed] hover:border-[#ffffff33]'
+                }`}
+              >
+                {state}
+              </button>
+            );
+          })}
+        </div>
       </div>
 
       {error && <p className="text-red-400 text-xs">{error}</p>}

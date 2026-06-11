@@ -13,6 +13,7 @@ import remarkGfm from 'remark-gfm';
 import { askNexus } from './lib/gemini';
 import { Loader2, Send } from 'lucide-react';
 import ProjectsView from './views/ProjectsView';
+import ChatInterface from './components/ChatInterface';
 
 import { IdeaState } from './lib/emergence';
 import { Sparkles, Zap, GitMerge, Activity } from 'lucide-react';
@@ -161,77 +162,6 @@ function ChapterRoute() {
   return <ChapterView slug={slug || ''} />;
 }
 
-function NexusChat() {
-  const [messages, setMessages] = useState<{role: 'user' | 'nexus', content: string}[]>([]);
-  const [input, setInput] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-
-  const handleSend = async () => {
-    if (!input.trim()) return;
-    
-    const userMsg = input;
-    setMessages(prev => [...prev, { role: 'user', content: userMsg }]);
-    setInput('');
-    setIsLoading(true);
-
-    const response = await askNexus(userMsg);
-    setMessages(prev => [...prev, { role: 'nexus', content: response }]);
-    setIsLoading(false);
-  };
-
-  return (
-    <div className="max-w-4xl mx-auto mt-12">
-      <div className="glass-panel p-6 flex flex-col h-[500px]">
-        <h2 className="text-2xl font-bold text-[#00f0ff] mb-4 border-b border-[#ffffff1a] pb-2">Nexus Intelligence</h2>
-        
-        <div className="flex-1 overflow-y-auto mb-4 space-y-4 pr-2">
-          {messages.length === 0 && (
-            <div className="text-center text-[#9ca3af] mt-20 italic">
-              "I am the Nexus. How may I assist you, Sovereign Operator?"
-            </div>
-          )}
-          {messages.map((msg, idx) => (
-            <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-              <div className={`max-w-[80%] p-3 rounded-lg ${msg.role === 'user' ? 'bg-[#ff9900] text-black' : 'bg-[#141e28] border border-[#00f0ff] text-[#e0e6ed]'}`}>
-                <div className="markdown-body text-sm">
-                  <ReactMarkdown>{msg.content}</ReactMarkdown>
-                </div>
-              </div>
-            </div>
-          ))}
-          {isLoading && (
-            <div className="flex justify-start">
-              <div className="bg-[#141e28] border border-[#00f0ff] text-[#e0e6ed] p-3 rounded-lg flex items-center gap-2">
-                <Loader2 className="w-4 h-4 animate-spin text-[#00f0ff]" />
-                <span className="text-sm">Synthesizing...</span>
-              </div>
-            </div>
-          )}
-        </div>
-
-        <div className="flex gap-2">
-          <input 
-            type="text" 
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-            placeholder="Query the Nexus..."
-            className="flex-1 bg-[#0a0f14] border border-[#ffffff1a] rounded-lg px-4 py-2 text-[#e0e6ed] focus:outline-none focus:border-[#00f0ff] transition-colors"
-          />
-          <button 
-            onClick={handleSend}
-            disabled={isLoading || !input.trim()}
-            className="bg-[#00f0ff] text-black px-4 py-2 rounded-lg hover:bg-[#00c0cc] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
-          >
-            <Send className="w-5 h-5" />
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-
 export default function App() {
   const [user, setUser] = useState<User | null>(null);
   const [authReady, setAuthReady] = useState(false);
@@ -285,7 +215,7 @@ export default function App() {
               <Route path="/chapter/:slug" element={<ChapterRoute />} />
               <Route path="/projects" element={<ProjectsView />} />
             </Routes>
-            <NexusChat />
+            <ChatInterface />
           </>
         ) : (
           <div className="max-w-md mx-auto mt-20 text-center glass-panel p-8">

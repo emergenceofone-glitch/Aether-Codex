@@ -18,6 +18,7 @@ service cloud.firestore {
     // Fields:
     //   - title: string (required)
     //   - description: string (required)
+    //   - status: string (required, 'Active' or 'In-Progress' or 'Archived')
     //   - ownerId: string (required, immutable)
     //   - createdAt: timestamp (required, immutable)
     //
@@ -72,9 +73,10 @@ service cloud.firestore {
     }
 
     function isValidProject(data) {
-      return hasOnlyAllowedFields(['title', 'description', 'ownerId', 'createdAt']) &&
+      return hasOnlyAllowedFields(['title', 'description', 'status', 'ownerId', 'createdAt']) &&
              data.title is string && data.title.size() > 0 && data.title.size() <= 100 &&
              data.description is string && data.description.size() <= 1000 &&
+             data.status is string && data.status in ['Active', 'In-Progress', 'Archived'] &&
              data.ownerId is string && data.ownerId.size() > 0 &&
              data.createdAt is timestamp;
     }
