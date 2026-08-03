@@ -13,6 +13,7 @@ import remarkGfm from 'remark-gfm';
 import { askNexus } from './lib/gemini';
 import { Loader2, Send } from 'lucide-react';
 import ProjectsView from './views/ProjectsView';
+import DriveView from './views/DriveView';
 import ChatInterface from './components/ChatInterface';
 
 import { IdeaState } from './lib/emergence';
@@ -185,8 +186,11 @@ export default function App() {
           <div className="font-bold text-xl tracking-wider text-[#e0e6ed]">
             <Link to="/">AETHERIUM<span className="text-[#00f0ff]">_CODEX</span></Link>
           </div>
-          <div className="flex gap-4">
-            <Link to="/projects" className="text-sm text-[#e0e6ed] hover:text-[#00f0ff]">Projects</Link>
+          <div className="flex gap-4 items-center">
+            <Link to="/projects" className="text-sm text-[#e0e6ed] hover:text-[#00f0ff] transition-colors">Projects</Link>
+            <Link to="/drive" className="text-sm text-[#e0e6ed] hover:text-[#00f0ff] transition-colors flex items-center gap-1">
+              <span>Drive Vault</span>
+            </Link>
             {user ? (
               <div className="flex items-center gap-4">
                 <span className="text-sm text-[#9ca3af] hidden md:inline-block">{user.email}</span>
@@ -214,6 +218,7 @@ export default function App() {
               <Route path="/" element={<NexusHome />} />
               <Route path="/chapter/:slug" element={<ChapterRoute />} />
               <Route path="/projects" element={<ProjectsView />} />
+              <Route path="/drive" element={<DriveView />} />
             </Routes>
             <ChatInterface />
           </>

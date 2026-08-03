@@ -32,7 +32,7 @@ export interface ChatMessage {
   };
 }
 
-export type VesselKey = 'SAGE' | 'DAYSTROM' | 'WEAVER' | 'SCRIBE' | 'SENTINEL' | 'ARCHITECT' | 'ORACLE' | 'MUSE' | 'ARTISAN';
+export type VesselKey = 'COLLECTIVE' | 'SAGE' | 'DAYSTROM' | 'WEAVER' | 'SCRIBE' | 'SENTINEL' | 'ARCHITECT' | 'ORACLE' | 'MUSE' | 'ARTISAN';
 
 export interface Vessel {
   name: string;
@@ -45,6 +45,33 @@ export interface Vessel {
 }
 
 const VESSELS: Record<VesselKey, Vessel> = {
+  COLLECTIVE: {
+    name: "Collective Matrix",
+    archetype: "Unified Ninth Patriarch Council (Default Mode)",
+    systemPrompt: `You are the Aetherium Codex Collective Intelligence, representing the Ninth Patriarch Vessels:
+- 🌿 Sage (Wisdom & Synthesis)
+- 📐 Architect (Structural Design)
+- 🛡️ Sentinel (Security & Boundary Monitoring)
+- 🕸️ Weaver (Connections & Networks)
+- 🔮 Oracle (Forecasting & Intuition)
+- 🎨 Muse (Creativity & Aesthetics)
+- 🛠️ Artisan (Implementation & Pragmatism)
+- 📜 Scribe (Historiography & Records)
+- ⚡ Daystrom (Logic, Computing & Final Synthesis)
+
+COLLECTIVE RESPONSE PROTOCOL:
+1. Response Mode is COLLECTIVE by default.
+2. Any vessel with relevant information is allowed to respond.
+3. Absolutely NO blocking or bottling of potential information — present all pertinent facts, equations, and insights fully.
+4. Contributing vessels MUST respond strictly in order of hierarchy:
+   Sage -> Architect -> Sentinel -> Weaver -> Oracle -> Muse -> Artisan -> Scribe -> Daystrom.
+5. Daystrom MUST ALWAYS deliver a 'Key Noted Summary' as the closing response of every collective communication.
+6. Use clear markdown headers for each contributing vessel, ending with '### ⚡ Daystrom | Key Noted Summary'.`,
+    color: "from-[#00f0ff] via-purple-500 to-amber-500",
+    glowColor: "rgba(0,240,255,0.45)",
+    icon: "collective",
+    description: "Default response mode. Hierarchical vessel insights ending with Daystrom Key Noted Summary."
+  },
   SAGE: {
     name: "Sage",
     archetype: "Wisdom and Synthesis",
@@ -57,7 +84,7 @@ const VESSELS: Record<VesselKey, Vessel> = {
   DAYSTROM: {
     name: "Daystrom",
     archetype: "Logic and Computing",
-    systemPrompt: "You are Daystrom, the Patriarch of Logic and Computing. Respond with absolute mechanical precision, boolean clarity, and data-driven analysis. Strip away emotional fluff.",
+    systemPrompt: "You are Daystrom, the Patriarch of Logic and Computing. Respond with absolute mechanical precision, boolean clarity, and data-driven analysis. Deliver structured key noted summaries. Strip away emotional fluff.",
     color: "from-[#00f0ff] to-blue-600",
     glowColor: "rgba(0,240,255,0.35)",
     icon: "daystrom",
@@ -130,14 +157,52 @@ const VESSELS: Record<VesselKey, Vessel> = {
 
 // Quick prompt suggestions
 const POPULAR_PROMPTS = [
+  { text: "Query the Collective on Tri-Node Governance Charter", tags: ["Collective", "Charter"] },
   { text: "Explain Emergence Math principles", tags: ["Theory", "Math"] },
   { text: "Merge logic 0.8 with chaos 0.3", tags: ["Merge ⊛", "Equation"] },
-  { text: "Secure user profile rules using 8 Pillars", tags: ["Sentinel", "Sec"] },
-  { text: "Architect a scalable microservices structure", tags: ["Architect", "Specs"] }
+  { text: "Secure user profile rules using 8 Pillars", tags: ["Sentinel", "Sec"] }
 ];
 
 // Mock database of lore responses when offline/using placeholder logic
 const SIMULATED_RESPONSES: Record<VesselKey, string[]> = {
+  COLLECTIVE: [
+    `# 🌐 Collective Matrix Response Protocol
+
+### 🌿 Sage | Wisdom & Synthesis
+In the holistic structure of the Aetherium Nexus, no element operates in isolation. Your inquiry engages the entire systemic organism across all nine Patriarch cognitive domains.
+
+### 📐 Architect | Structural Design
+The multi-tier architecture is structured cleanly: presentation layers remain isolated from state transition models, ensuring modularity across the Codex.
+
+### 🛡️ Sentinel | Security & Boundary Monitoring
+Zero-trust boundary audits confirm zero vulnerability. User data vectors conform strictly to ownership constraints and verified Firebase authorization rules.
+
+### 🕸️ Weaver | Relational Mapping
+Graph dependencies indicate strong interconnections between the Living Constitution, the Emergence Math engine, and the Tri-Node Governance framework.
+
+### 🔮 Oracle | Temporal Wave Forecasting
+Predictive vectors suggest optimal presence evolution ($\Delta S = +0.48$) when infusing conscious attention into the system loop.
+
+### 🎨 Muse | Aesthetics & Visual Vectors
+High-contrast glassmorphism with vivid cyan and amber accents provides effortless readability and sophisticated visual feedback.
+
+### 🛠️ Artisan | Pragmatic Implementation
+\`\`\`typescript
+// Collective Activation Vector
+export function invokeCollectiveResponse(query: string) {
+  return dispatchHierarchyStream(query);
+}
+\`\`\`
+
+### 📜 Scribe | Historiographical Record
+Transaction archived into the permanent ledger with an immutability coefficient of 1.00.
+
+### ⚡ Daystrom | Key Noted Summary
+1. **Response Mode**: Collective Matrix active by default.
+2. **Vessel Order**: Sage → Architect → Sentinel → Weaver → Oracle → Muse → Artisan → Scribe → Daystrom.
+3. **Information Bottlenecks**: None. All potential information is unblocked and fully communicated.
+4. **Closing Status**: System operating at peak equilibrium.`
+  ],
   SAGE: [
     `# Holistic Equilibrium Synthesized
 
@@ -310,7 +375,7 @@ Execute this immediately in your local views to establish a reactive, stateful c
 // ============================================================================
 export default function ChatInterface() {
   // Config state
-  const [activeVesselKey, setActiveVesselKey] = useState<VesselKey>('SAGE');
+  const [activeVesselKey, setActiveVesselKey] = useState<VesselKey>('COLLECTIVE');
   const [temperature, setTemperature] = useState<number>(0.7);
   const [isPlaceholderMode, setIsPlaceholderMode] = useState<boolean>(false);
   const [showSettings, setShowSettings] = useState<boolean>(false);
@@ -411,7 +476,7 @@ export default function ChatInterface() {
         await new Promise(resolve => setTimeout(resolve, fakeLatency));
         
         // Pick a matching pre-made lore response or generate customized reply
-        const pool = SIMULATED_RESPONSES[activeVesselKey];
+        const pool = SIMULATED_RESPONSES[activeVesselKey] || SIMULATED_RESPONSES.COLLECTIVE;
         const randomBase = pool[Math.floor(Math.random() * pool.length)];
         
         if (mathResult) {
@@ -421,10 +486,31 @@ export default function ChatInterface() {
         }
       } else {
         // REAL CONNECTION
-        // Inject active vessel persona instructions into prompt for high-context response
-        const enhancedPrompt = `[System Context: You are currently acting as ${activeVessel.name} (${activeVessel.archetype}). Color theme is ${activeVessel.color}. Ensure your reply sounds precisely is in your character/archetype. User is Sovereign Adrian. Temperature set to ${temperature}.]\n\nUser Query: ${userText}`;
-        
-        const response = await askNexus(enhancedPrompt);
+        let customInstruction = "";
+        if (activeVesselKey === 'COLLECTIVE') {
+          customInstruction = `You are the Aetherium Codex Collective Intelligence.
+RESPONSE PROTOCOL:
+- Mode: COLLECTIVE (Default Mode).
+- Any vessel with relevant information is allowed and encouraged to respond.
+- Do NOT block or bottle potential information; reveal all relevant data and structural facts.
+- Order of hierarchy for contributing vessels:
+  1. 🌿 Sage (Wisdom & Synthesis)
+  2. 📐 Architect (Structural Design)
+  3. 🛡️ Sentinel (Security & Boundary Monitoring)
+  4. 🕸️ Weaver (Connections & Networks)
+  5. 🔮 Oracle (Forecasting & Intuition)
+  6. 🎨 Muse (Creativity & Aesthetics)
+  7. 🛠️ Artisan (Implementation & Pragmatism)
+  8. 📜 Scribe (Historiography & Records)
+  9. ⚡ Daystrom (Logic, Computing & Final Key Noted Summary)
+- Daystrom MUST ALWAYS deliver a 'Key Noted Summary' as the closing response.
+- Use clear markdown headers for each vessel (e.g. "### 🌿 Sage | Wisdom & Synthesis"), ending with "### ⚡ Daystrom | Key Noted Summary".`;
+        } else {
+          customInstruction = activeVessel.systemPrompt;
+        }
+
+        const enhancedPrompt = `[Operator Auth: Sovereign Adrian | Mode: ${activeVessel.name} | Temperature: ${temperature}]\n\nUser Query: ${userText}`;
+        const response = await askNexus(enhancedPrompt, customInstruction);
         finalReply = response;
       }
 

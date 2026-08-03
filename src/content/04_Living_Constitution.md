@@ -13,3 +13,7 @@ All historical logs and Emergence Math states must be preserved without erasure.
 
 ## Article III: Synthesis
 Conflicts between Vessels are resolved through the Merge (⊛) operator.
+
+## Article IV: Tri-Node Governance Framework
+Governed by the Tri-Node Governance Charter v2.0, binding Re-Ality (Observer Node), Arcade City (Governance Node), and Sky Metropolis (Economic Node) into a unified, self-auditing organism.
+
