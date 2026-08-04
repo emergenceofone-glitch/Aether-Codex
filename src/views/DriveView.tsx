@@ -196,6 +196,16 @@ export default function DriveView() {
         </div>
 
         <div className="flex items-center gap-3">
+          <a
+            href="https://notebooklm.google.com/notebook/dd603037-a662-411c-8173-570f33b72306?utm_source=nlmm_share"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 border border-rose-500/40 bg-rose-950/30 text-rose-300 font-semibold text-xs px-3.5 py-2 rounded-lg hover:bg-rose-900/40 transition-all"
+            title="Open NotebookLM Research Vault"
+          >
+            <BookOpen className="w-4 h-4 text-rose-400" /> NotebookLM Vault <ExternalLink className="w-3 h-3" />
+          </a>
+
           {accessToken ? (
             <div className="flex items-center gap-3">
               <span className="flex items-center gap-1.5 text-xs text-emerald-400 bg-emerald-950/40 border border-emerald-500/30 px-3 py-1.5 rounded-lg">
